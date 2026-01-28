@@ -325,10 +325,9 @@ app.get('/api/statistics', authenticateToken, (req, res) => {
 // ============= STATIC FILES & HTML ROUTES =============
 
 // HTML routes MUST come BEFORE static files
-// Serve login page for root path
+// Test route for serverless verification
 app.get('/', (req, res) => {
-  console.log('GET / - serving login.html');
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.send('Serveur OK');
 });
 
 // Serve dashboard for /dashboard
@@ -341,16 +340,6 @@ app.get('/dashboard', (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Start server
-console.log('Routes registered. Starting server...');
-// In serverless environments (Vercel) we export the app and do not call listen()
-if (process.env.NODE_ENV !== 'serverless') {
-  app.listen(PORT, () => {
-    console.log(`\n✅ Server running on http://localhost:${PORT}`);
-    console.log('Press Ctrl+C to stop the server');
-  });
-} else {
-  console.log('Running in serverless mode - not starting listener');
-}
-
 // Export the Express app for serverless platforms (Vercel)
+// Note: do not call app.listen() here — Vercel will handle invocation.
 module.exports = app;
