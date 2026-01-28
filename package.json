@@ -1,14 +1,13 @@
 {
   "name": "student-management-app",
   "version": "1.0.0",
-  "description": "A full-stack Student Management application with Vercel, MongoDB, and vanilla JavaScript",
+  "description": "A full-stack Student Management application with Express, SQLite, and vanilla JavaScript",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js",
-    "vercel-build": "echo 'Build complete'"
+    "dev": "node server.js"
   },
-  "keywords": ["student", "management", "vercel", "mongodb"],
+  "keywords": ["student", "management", "express", "sqlite"],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -17,8 +16,7 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.7.0"
+    "jsonwebtoken": "^9.0.2"
   }
 }
 
