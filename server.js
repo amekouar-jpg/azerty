@@ -342,7 +342,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Start server
 console.log('Routes registered. Starting server...');
-app.listen(PORT, () => {
-  console.log(`\n✅ Server running on http://localhost:${PORT}`);
-  console.log('Press Ctrl+C to stop the server');
-});
+// In serverless environments (Vercel) we export the app and do not call listen()
+if (process.env.NODE_ENV !== 'serverless') {
+  app.listen(PORT, () => {
+    console.log(`\n✅ Server running on http://localhost:${PORT}`);
+    console.log('Press Ctrl+C to stop the server');
+  });
+} else {
+  console.log('Running in serverless mode - not starting listener');
+}
+
+// Export the Express app for serverless platforms (Vercel)
+module.exports = app;

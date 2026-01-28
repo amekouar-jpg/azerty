@@ -2,12 +2,10 @@
 
 ## Setup Instructions
 
-### 1. Create MongoDB Atlas Account
-1. Go to https://www.mongodb.com/cloud/atlas
-2. Sign up for free
-3. Create a cluster (M0 tier - free)
-4. Create a database user (username/password)
-5. Copy your connection string (it will look like: `mongodb+srv://username:password@cluster.mongodb.net/student-app?retryWrites=true&w=majority`)
+### Note about databases
+This project has been prepared for a Serverless deployment on Vercel using *mock* in-memory data for development/testing. The original MongoDB integration was removed and replaced with temporary mock data so the serverless functions run without an external DB.
+
+If you later want to use a real database in production, you can reintroduce a cloud DB (MongoDB Atlas or other) and update the API functions accordingly.
 
 ### 2. Deploy to Vercel
 
@@ -21,8 +19,7 @@ vercel login
 # Deploy
 vercel
 
-# During deployment, add these environment variables:
-# MONGODB_URI = your connection string from MongoDB Atlas
+# During deployment, add this environment variable if you use JWTs:
 # JWT_SECRET = any random string (e.g., "my-secret-key-123")
 ```
 
@@ -40,7 +37,7 @@ The frontend will automatically use the new API URLs.
 1. Update `public/app.js` and `public/auth.js`:
    - Change `const API_URL = '/api'` to `const API_URL = 'http://localhost:3000/api'`
 
-2. Install MongoDB locally or use MongoDB Atlas connection string
+2. (Optional) If you want to connect to a real database later, install MongoDB locally or use a cloud connection string
 
 3. Run:
 ```bash
