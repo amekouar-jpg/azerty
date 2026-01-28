@@ -34,6 +34,17 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Invalid username or password' });
       }
 
+      // Record login (IP and timestamp)
+      const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+      if (typeof user.recordLogin === 'function') {
+        user.recordLogin(ip);
+      } else {
+        user.lastLogin = new Date();
+        user.loginCount = (user.loginCount || 0) + 1;
+        user.loginHistory = user.loginHistory || [];
+        user.loginHistory.push({ at: user.lastLogin, ip });
+      }
+
       // Generate token
       const token = generateToken(user);
 

@@ -5,6 +5,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const db = require('./db/database');
 const { authenticateToken, generateToken } = require('./db/auth');
+const { sql } = require('@vercel/postgres');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -148,6 +149,28 @@ app.post('/api/auth/login', (req, res) => {
 // Verify token
 app.get('/api/auth/verify', authenticateToken, (req, res) => {
   res.json({ user: req.user, message: 'Token is valid' });
+});
+
+// Vercel Postgres endpoints (list users and update last_seen)
+// GET all users from Postgres
+app.get('/users', async (req, res) => {
+  try {
+    const { rows } = await sql`SELECT * FROM users;`;
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Mark user as connected (update last_seen)
+app.post('/connect', async (req, res) => {
+  const { username } = req.body;
+  try {
+    await sql`UPDATE users SET last_seen = NOW() WHERE username = ${username};`;
+    res.send('Statut mis à jour');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // ============= STUDENT API ROUTES (Protected) =============
